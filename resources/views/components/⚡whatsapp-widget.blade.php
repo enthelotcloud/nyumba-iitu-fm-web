@@ -76,8 +76,8 @@ new class extends Component {
                     <span class="absolute bottom-0 right-0 w-3 h-3 bg-green-400 border-2 border-[#075e54] rounded-full"></span>
                 </div>
                 <div>
-                    <h4 class="font-bold text-sm">Deezme Mobitec</h4>
-                    <p class="text-[11px] opacity-80 leading-none">Online • Insurance Assistant</p>
+                    <h4 class="font-bold text-sm">Nyumba iitu FM</h4>
+                    <p class="text-[11px] opacity-80 leading-none">Online • Wiigue wi Mucii</p>
                 </div>
             </div>
             <button @click="$wire.isOpen = false" class="opacity-70 hover:opacity-100">
