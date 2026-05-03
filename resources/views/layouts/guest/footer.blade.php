@@ -7,7 +7,7 @@
                     <img src="{{ asset('logo.png') }}" alt="Nyumba iitu FM Logo" class="h-20 w-auto object-contain">
                 </a>
                 <p class="text-slate-500 text-sm leading-relaxed">
-                    Streaming live on 91.5 FM and online. Your premier Kikuyu radio station bringing you the best in music, news, and cultural shows. Wiigue wi mucii!
+                    Streaming live on 91.5 FM and online. Your Favorite Kikuyu radio station bringing you the best in music, news, and cultural shows. Wiigue wi mucii!
                 </p>
                 <div class="flex space-x-4 pt-2">
                     <a href="#" class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-blue-100 hover:text-blue-600 transition-colors">
@@ -41,7 +41,7 @@
                     <li><a href="{{ url('/contact') }}" class="text-slate-500 hover:text-blue-600 transition-colors">Contact Us</a></li>
                     <li><a href="#" class="text-slate-500 hover:text-blue-600 transition-colors">Advertise with us</a></li>
                     <li><a href="{{ url('/privacy-policy') }}" class="text-slate-500 hover:text-blue-600 transition-colors">Privacy Policy</a></li>
-                    <li><a href="{{ url('/terms') }}" class="text-slate-500 hover:text-blue-600 transition-colors">Terms of Service</a></li>
+                    <li><a href="{{ url('/terms-of-service') }}" class="text-slate-500 hover:text-blue-600 transition-colors">Terms of Service</a></li>
                 </ul>
             </div>
 
@@ -59,14 +59,14 @@
                         <i class="fas fa-envelope text-blue-500 text-base mt-1"></i>
                         <div>
                             <span class="block font-medium text-slate-700">Email</span>
-                            <a href="mailto:studio@nyumbaiitufm.co.ke" class="hover:text-blue-600 transition-colors">studio@nyumbaiitufm.co.ke</a>
+                            <a href="mailto:info@nyumbaiitufm.co.ke" class="hover:text-blue-600 transition-colors">info@nyumbaiitufm.co.ke</a>
                         </div>
                     </li>
                     <li class="flex items-start gap-3">
                         <i class="fas fa-map-marker-alt text-red-500 text-base mt-1"></i>
                         <div>
                             <span class="block font-medium text-slate-700">Location</span>
-                            <span>Ruiru, Kiambu County, Kenya</span>
+                            <span>Ruiru, Kihunguro, EssyHeights 1st Floor </span>
                         </div>
                     </li>
                 </ul>
