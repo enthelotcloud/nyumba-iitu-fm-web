@@ -21,9 +21,9 @@
     <main>
         @yield('content')
     </main>
-
+    <livewire:whatsapp-widget />
     @include('layouts.guest.footer')
-
+    <x-bottom-nav />
     @livewireScripts
 </body>
 </html>
