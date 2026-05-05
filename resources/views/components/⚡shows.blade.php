@@ -8,6 +8,7 @@ new class extends Component {
     public $currentShow;
     public $nextShow;
     public $upcomingShows = [];
+    public $countdownText = '';
 
     public function mount()
     {
@@ -16,34 +17,56 @@ new class extends Component {
 
     public function loadShows()
     {
-        $now = Carbon::now('Africa/Nairobi');
+        // Use a unified timezone for Nairobi
+        $tz = 'Africa/Nairobi';
+        $now = Carbon::now($tz);
         $dayOfWeek = $now->dayOfWeek;
-        $time = $now->format('H:i:s');
+        $timeString = $now->format('H:i:s');
 
         $schedules = Schedule::with('show')
             ->where('day_of_week', $dayOfWeek)
             ->orderBy('start_time')
             ->get();
 
-        $this->currentShow = $schedules->where('start_time', '<=', $time)->where('end_time', '>', $time)->first();
+        // Find Current Show
+        $this->currentShow = $schedules->where('start_time', '<=', $timeString)
+                                      ->where('end_time', '>', $timeString)
+                                      ->first();
 
-        $this->nextShow = $schedules->where('start_time', '>', $time)->first();
+        // Find Next Show
+        $this->nextShow = $schedules->where('start_time', '>', $timeString)->first();
 
         if ($this->nextShow) {
-            $startTime = Carbon::createFromFormat('H:i:s', $this->nextShow->start_time, 'Africa/Nairobi');
-            $this->nextShow->diffInMins = $now->diffInMinutes($startTime);
-        }
+            // Construct a full datetime for today to calculate precise diffs
+            $nextStart = Carbon::createFromFormat('Y-m-d H:i:s', $now->format('Y-m-d') . ' ' . $this->nextShow->start_time, $tz);
 
-        if ($this->nextShow) {
+            $totalSeconds = $now->diffInSeconds($nextStart, false);
+
+            if ($totalSeconds <= 0) {
+                $this->countdownText = "Starting now";
+            } elseif ($totalSeconds < 3600) {
+                // Less than an hour: show minutes and seconds
+                $m = floor($totalSeconds / 60);
+                $s = $totalSeconds % 60;
+                $this->countdownText = "In {$m}m {$s}s";
+            } else {
+                // More than an hour: show hours and minutes
+                $h = floor($totalSeconds / 3600);
+                $m = floor(($totalSeconds % 3600) / 60);
+                $this->countdownText = "In {$h}h {$m}m";
+            }
+
             $this->upcomingShows = $schedules->where('start_time', '>', $this->nextShow->start_time);
         } else {
             $this->upcomingShows = [];
+            $this->countdownText = '';
         }
     }
 };
 ?>
 
-<div wire:poll.60s="loadShows" class="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden" style="font-family: 'Poppins', sans-serif;">
+{{-- Poll every 1s for the live countdown effect --}}
+<div wire:poll.1s="loadShows" class="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden" style="font-family: 'Poppins', sans-serif;">
 
     <div class="px-6 py-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
         <h2 class="text-xl font-bold text-slate-800">Programme Lineup</h2>
@@ -53,13 +76,14 @@ new class extends Component {
     <div class="p-5 sm:p-6 space-y-4">
 
         @if($currentShow)
+            <!-- Original Blue Design for ON AIR -->
             <div class="relative bg-blue-50 border-2 border-blue-500 rounded-2xl p-5 shadow-sm transition-all">
                 <div class="absolute top-4 right-4 flex items-center gap-2 bg-white px-3 py-1 rounded-full shadow-sm border border-blue-100">
                     <span class="relative flex h-2.5 w-2.5">
                       <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
                       <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
                     </span>
-                    <span class="text-xs font-bold text-slate-700 tracking-wider">ON AIR</span>
+                    <span class="text-xs font-bold text-slate-700 tracking-wider uppercase">ON AIR</span>
                 </div>
 
                 <p class="text-blue-600 font-semibold text-sm mb-1">
@@ -76,9 +100,10 @@ new class extends Component {
         @endif
 
         @if($nextShow)
+            <!-- Original Green Design for UP NEXT -->
             <div class="bg-white border-2 border-green-400 rounded-2xl p-5 shadow-sm relative overflow-hidden">
                 <div class="absolute top-0 right-0 bg-green-500 text-white text-xs font-bold px-3 py-1.5 rounded-bl-xl">
-                    Up Next · {{ $nextShow->diffInMins < 60 ? "In {$nextShow->diffInMins} mins" : \Carbon\Carbon::parse($nextShow->start_time)->diffForHumans() }}
+                    Up Next · {{ $countdownText }}
                 </div>
 
                 <p class="text-green-600 font-medium text-sm mb-1 mt-2">

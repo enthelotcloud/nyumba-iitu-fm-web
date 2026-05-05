@@ -71,7 +71,7 @@
 
         </div>
 
-        <div class="pt-8 mt-8 border-t border-slate-100 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div class="pt-2 mt-2 border-t border-slate-100 flex flex-col md:flex-row justify-between items-center gap-4">
             <p class="text-slate-400 text-xs font-medium">
                 &copy; {{ date('Y') }} Nyumba iitu FM (91.5 MHz). All rights reserved.
             </p>
